@@ -84,6 +84,18 @@ public class UserController extends AbstractBaseCtrl {
 
     }
 
+    @GetMapping("/user.findByUserNameOrMobile/{str}")
+    @ResponseBody
+    public Object findUserByUserNameOrMobile(@PathVariable("str") String str){
+        try{
+            User curUser = userService.findCurUserByUserNameOrMobile(str);
+            return success(curUser);
+        } catch (MyShopException ex){
+            return failure(ex.getErrorCode(),ex.getMessage());
+        }
+
+    }
+
     @GetMapping("/user.deleteById")
     public Object deleteUserById(@RequestParam("id") Long id){
         try{

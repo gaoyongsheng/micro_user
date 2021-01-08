@@ -24,6 +24,17 @@ public class AddressController extends AbstractBaseCtrl {
         return success("");
     }
 
+    @GetMapping("/address.findAllByAddressId/{addrId}")
+    public Object findAddressByAddrId(@PathVariable("addrId") Long addrId){
+        try{
+            return success(addressService.findAddressById(addrId));
+        } catch (MyShopException ex){
+            ex.printStackTrace();
+            return failure(ex.getErrorCode(),ex.getMessage());
+        }
+
+    }
+
     @GetMapping("/address.findAllByUserId/{userId}")
     public Object findAll(@PathVariable("userId") Long userId){
         return success(addressService.findAllAddress(userId));
