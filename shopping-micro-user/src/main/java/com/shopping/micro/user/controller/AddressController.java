@@ -26,12 +26,12 @@ public class AddressController extends AbstractBaseCtrl {
 
     @GetMapping("/address.findAllByAddressId/{addrId}")
     public Object findAddressByAddrId(@PathVariable("addrId") Long addrId){
-        try{
+//        try{
             return success(addressService.findAddressById(addrId));
-        } catch (MyShopException ex){
-            ex.printStackTrace();
-            return failure(ex.getErrorCode(),ex.getMessage());
-        }
+//        } catch (MyShopException ex){
+//            ex.printStackTrace();
+//            return failure(ex.getErrorCode(),ex.getMessage());
+//        }
 
     }
 
@@ -42,20 +42,20 @@ public class AddressController extends AbstractBaseCtrl {
 
     @PostMapping("/address.delete")
     public Object deleteAddress(@RequestBody AddressCro addressCro){
-        try{
+//        try{
             addressService.deleteAddress(addressCro.toDto());
             return success("");
-        } catch (MyShopException ex){
-            return failure(ex.getErrorCode(),ex.getMessage());
-        }
+//        } catch (MyShopException ex){
+//            return failure(ex.getErrorCode(),ex.getMessage());
+//        }
     }
 
     @PostMapping("/address.edit")
     public Object editAddress(@RequestBody AddressCro addressCro){
-        try{
+//        try{
             return success(addressService.editAddress(addressCro.toDto()));
-        } catch (MyShopException ex){
-            return failure(ex.getErrorCode(),ex.getMessage());
-        }
+//        } catch (MyShopException ex){
+//            return failure(ex.getErrorCode(),ex.getMessage());
+//        }
     }
 }

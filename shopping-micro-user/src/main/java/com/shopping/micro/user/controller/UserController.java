@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,21 +31,26 @@ public class UserController extends AbstractBaseCtrl {
     @Autowired
     UserService userService;
 
+    @Value("${springcloud.hello}")
+    private String hello;
+
+    @RequestMapping("/hello")
+    public String from() {
+        return this.hello;
+    }
+
     @ApiOperation(value = "用户注册")
     @PostMapping("/user.register")
     public Object registerUser(@RequestBody UserRegisteCro userRegisteCro){
-        try{
-            userService.registerUser(userRegisteCro);
-            return success("");
-        }catch(MyShopException ex){
-            return failure(ex.getErrorCode(),ex.getMessage());
-        }
+        userService.registerUser(userRegisteCro);
+        return success("");
     }
 
     @PostMapping("/user.login")
     public Object userLogin(@RequestBody UserLoginCro userLoginCro){
-        try{
-            User user = userService.findUserByUserNameOrMobile(userLoginCro);
+        User user = userService.findUserByUserNameOrMobile(userLoginCro);
+        return success(user);
+
 //            int data = 100;
 //            if(redisUtils.hasKey("rankList")){
 //                redisUtils.decr("rankList",1L);
@@ -52,10 +58,7 @@ public class UserController extends AbstractBaseCtrl {
 //                redisUtils.set("rankList",data);
 //            }
 
-            return success(user);
-        } catch (MyShopException ex){
-            return failure(ex.getErrorCode(),ex.getMessage());
-        }
+
     }
 
     @PostMapping("/user.findAll")
@@ -75,36 +78,21 @@ public class UserController extends AbstractBaseCtrl {
 //    通过 @PathVariable 可以将URL中占位符参数{xxx}绑定到处理器类的方法形参中@PathVariable(“xxx“)
     @GetMapping("/user.findById/{id}")
     public Object findUserById(@PathVariable("id") Long id){
-        try{
-            User curUser = userService.findUserById(id);
-            return success(curUser);
-        } catch (MyShopException ex){
-            return failure(ex.getErrorCode(),ex.getMessage());
-        }
-
+        User curUser = userService.findUserById(id);
+        return success(curUser);
     }
 
     @GetMapping("/user.findByUserNameOrMobile/{str}")
     @ResponseBody
     public Object findUserByUserNameOrMobile(@PathVariable("str") String str){
-        try{
-            User curUser = userService.findCurUserByUserNameOrMobile(str);
-            return success(curUser);
-        } catch (MyShopException ex){
-            return failure(ex.getErrorCode(),ex.getMessage());
-        }
-
+        User curUser = userService.findCurUserByUserNameOrMobile(str);
+        return success(curUser);
     }
 
     @GetMapping("/user.deleteById")
     public Object deleteUserById(@RequestParam("id") Long id){
-        try{
-
-            userService.deleteUserById(id);
-            return success("");
-        } catch (MyShopException ex){
-            return failure(ex.getErrorCode(),ex.getMessage());
-        }
+        userService.deleteUserById(id);
+        return success("");
     }
 
     @PostMapping("/mail.send")
